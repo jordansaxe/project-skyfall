@@ -10,9 +10,12 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'devise'
 gem 'bootstrap-sass', '~> 3.1.1.1'
+gem 'omniauth-foursquare'
+gem 'pry'
 
 group :development, :test do
   gem 'sqlite3'
+  gem 'dotenv-rails'
 end
 
 group :production do

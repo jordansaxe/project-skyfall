@@ -15,6 +15,8 @@ Devise.setup do |config|
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
 
+  # Declare provider for OmniAuth
+  config.omniauth :foursquare, "5ZVGWS1P01VCH5EWNRHR3MNFTIAVCF0HBYJBLV1SOF4D0RC5", ENV['FOURSQUARE_SECRET'], :strategy_class => OmniAuth::Strategies::Foursquare  
   # ==> ORM configuration
   # Load and configure the ORM. Supports :active_record (default) and
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
