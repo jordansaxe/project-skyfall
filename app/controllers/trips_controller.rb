@@ -10,6 +10,7 @@ class TripsController < ApplicationController
   # GET /trips/1
   # GET /trips/1.json
   def show
+    @results = search_foursquare(@trip.location)
   end
 
   # GET /trips/new
@@ -70,5 +71,21 @@ class TripsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def trip_params
       params.require(:trip).permit(:location, :trip_start_date, :trip_end_date, :description)
+    end
+
+    def search_foursquare(location)
+      client = Foursquare2::Client.new(
+        :oauth_token => current_user.token, 
+        :api_version => Time.now.strftime('%Y%m%d')
+        )
+
+      query = client.explore_venues(near: location, friendVisits: 'visited')
+      
+      query["groups"].first.items.map {|each|
+        hash = {}
+        hash[:name] = each["venue"]["name"]
+        hash[:link] = each["venue"]['link']
+        hash
+      }
     end
 end
