@@ -21,7 +21,7 @@
 </p>
 
 <% @results.each do |venue| %>
-  <%= venue["name"] %><%= venue["lat"] %><%= venue["long"] %><br />
+  <%= venue["name"] %> | <%= venue["lat"] %> | <%= venue["long"] %> | <%= venue["address"] %><br />
 <% end %>
 
 <div id="googleMap" style="width:500px;height:380px;"></div>
