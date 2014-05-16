@@ -1,0 +1,6 @@
+<div class="jumbotron">
+  <h1>Welcome to Skyfall</h1>
+  <p>Find places where your friends have been in places you are going</p>
+  <%= link_to "Sign in with Foursquare", user_omniauth_authorize_path(:foursquare), :class => 'btn btn-primary btn-lg' %>
+  <%= link_to "Sign up", new_user_registration_path, :class => 'btn btn-primary btn-lg'  %>
+</div>

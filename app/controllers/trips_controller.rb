@@ -80,11 +80,12 @@ class TripsController < ApplicationController
         )
 
       query = client.explore_venues(near: location, friendVisits: 'visited')
-      
+
       query["groups"].first.items.map {|each|
         hash = {}
-        hash[:name] = each["venue"]["name"]
-        hash[:link] = each["venue"]['link']
+        hash["name"] = each["venue"]["name"]
+        hash["lat"] = each["venue"]["location"]['lat']
+        hash["long"] = each["venue"]["location"]['lng']
         hash
       }
     end
