@@ -1,32 +1,22 @@
-<h1>Listing trips</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Location</th>
-      <th>Trip start date</th>
-      <th>Trip end date</th>
-      <th>Description</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
+<h1 class="title">Upcoming Trips</h1><br/>
+  <div class="upcoming-trips clearfix">
     <% @trips.each do |trip| %>
-      <tr>
-        <td><%= trip.location %></td>
-        <td><%= trip.trip_start_date %></td>
-        <td><%= trip.trip_end_date %></td>
-        <td><%= trip.description %></td>
-        <td><%= link_to 'Show', trip %></td>
-        <td><%= link_to 'Edit', edit_trip_path(trip) %></td>
-        <td><%= link_to 'Destroy', trip, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    <div class="col-md-4">
+      <ul>
+        <li>
+          <div class="post-image">
+            <i class="icon-picons-earth"></i>
+          </div>
+          <h3><%= link_to trip.location, trip %></h3>
+          <p>Notes: <%= trip.description %></p>
+          <div class="meta">
+            <span><i class="fa fa-calendar"></i><%= trip.trip_start_date %></span>
+          </div>
+        </li>
+      </ul>
+    </div>
     <% end %>
-  </tbody>
-</table>
+  </div>
 
 <br>
 
