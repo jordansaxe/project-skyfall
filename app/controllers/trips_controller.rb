@@ -11,30 +11,6 @@ class TripsController < ApplicationController
   # GET /trips/1.json
   def show
     @results = search_foursquare(@trip.location)
-
-    @geojson = Array.new
-
-    @results.each do |results|
-      @geojson << {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [results["long"], results["lat"]]
-        },
-        properties: {
-          name: results["name"],
-          address: results["address"],
-          :'marker-color' => '#00607d',
-          :'marker-symbol' => 'circle',
-          :'marker-size' => 'medium'
-        }
-      }
-    end
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @geojson }  # respond with the created JSON object
-    end
   end
 
   # GET /trips/new
@@ -111,6 +87,7 @@ class TripsController < ApplicationController
         hash["lat"] = each["venue"]["location"]['lat']
         hash["long"] = each["venue"]["location"]['lng']
         hash["address"] = each["venue"]["location"]["address"]
+        hash["url"] = each["venue"]["canonicalUrl"]
         hash
       }
     end
