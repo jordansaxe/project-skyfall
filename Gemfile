@@ -12,7 +12,6 @@ gem 'devise'
 gem 'bootstrap-sass', '~> 3.1.1.1'
 gem 'omniauth-foursquare'
 gem 'pry'
-gem 'geocoder'
 
 group :development, :test do
   gem 'sqlite3'

@@ -1,86 +1,91 @@
-<p id="notice"><%= notice %></p>
-
-<%= link_to 'Edit', edit_trip_path(@trip) %> |
-<%= link_to 'Back', trips_path %>
+<div class="header_buttons">
+  <%= link_to 'Edit', edit_trip_path(@trip), class: "btn btn-warning" %>
+  <%= link_to 'Back', trips_path, class: "btn btn-default" %>
+</div>
 
 <p>
   <h2 class="title"><%= @trip.location %></h2>
 </p>
 
-<p>
-  <strong>Leaving on:</strong>
-  <%= @trip.trip_start_date %>
-</p>
+<div class="trip_info">
+  <p>
+    <h4>Leaving on:</h4>
+    <h5><%= @trip.trip_start_date %></h5>
 
-<p>
-  <strong>Coming back:</strong>
-  <%= @trip.trip_end_date %>
-</p>
+    <h4>Coming back:</h4>
+    <h5><%= @trip.trip_end_date %></h5>
 
-<p>
-  <strong>Description:</strong>
-  <%= @trip.description %>
-</p>
+    <h4>Description:</h4>
+    <h5><%= @trip.description %></h5>
+  </p>
+</div>
 
-<% @results.each do |venue| %>
-  <%= venue["name"] %>
-  <%= venue["lat"] %>
-  <%= venue["long"] %>
-  <%= venue["address"] %>
-  <%= venue["url"] %>
-<% end %>
+<div class="gmap">
+  <div class="map-overlay-container">
+    <div class="map-overlay" id="map-1042091">
+      <ul class="map-menu">
+        <% @results.take(8).each do |loc| %>
+          <li><a href="#"><%= loc['name'] %></a></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div id="googleMap" style="width:100%;height:380px;"></div>
 
-<div id="googleMap" style="width:1200px;height:380px;"></div>
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=false">
+  </script>
 
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false">
-</script>
-
-<script>
-  function makeMarker(map, name, url, lat, long) {
-    var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(lat,long),
-      animation: google.maps.Animation.DROP, 
-      map: map
-    });
-
-    var contentString = '<div id="content">'+
-    '<div id="siteNotice">'+
-    '</div>'+
-    '<h1 id="firstHeading" class="firstHeading">' + name + '</h1>'+
-    '<div id="bodyContent">'+
-    '<p>' + url + '</p> '+
-    '</div>'+
-    '</div>';
-
-    var infowindow = new google.maps.InfoWindow({
-      content: contentString
-    });
-
-    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.open(map,marker);
-    });
-  }
-
-  function initialize() {
-    var mapProp = {
-      center: new google.maps.LatLng(51.508742,-0.120850),
-      zoom:11,
-      mapTypeId:google.maps.MapTypeId.ROADMAP
-      };
-     map=new google.maps.Map(document.getElementById("googleMap")
-      ,mapProp);
-
-    <% @results.each do |loc| %>
-      makeMarker(map, "<%= loc['name'] %>", "<%= loc['url'] %>", "<%= loc['lat'] %>", "<%= loc['long'] %>") 
-    <% end %>
-  }
-
-  function drop() {
-    for (var i =0; i < markerArray.length; i++) {
-      setTimeout(function() {
-        addMarkerMethod();
-      }, i * 200);
+  <script>
+    function neighborhood_map(id) {
+      $('#map-' + id).animate({width: 'toggle'}, '300');
     }
-  }
-  google.maps.event.addDomListener(window, 'load', initialize);
-</script>
+
+    function makeMarker(map, name, url, lat, long) {
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(lat,long),
+        animation: google.maps.Animation.DROP, 
+        map: map
+      });
+
+      var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 id="firstHeading" class="firstHeading">' + name + '</h1>'+
+      '<div id="bodyContent">'+
+      '<p>' + url + '</p> '+
+      '</div>'+
+      '</div>';
+
+      var infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map,marker);
+      });
+    }
+
+    function initialize() {
+      var mapProp = {
+        center: new google.maps.LatLng(<%= @results.first['lat'] %>,<%= @results.first['long'] %>),
+        zoom:11,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+        };
+       map=new google.maps.Map(document.getElementById("googleMap")
+        ,mapProp);
+
+      <% @results.each do |loc| %>
+        makeMarker(map, "<%= loc['name'] %>", "<%= loc['url'] %>", "<%= loc['lat'] %>", "<%= loc['long'] %>") 
+      <% end %>
+    }
+
+    function drop() {
+      for (var i =0; i < markerArray.length; i++) {
+        setTimeout(function() {
+          addMarkerMethod();
+        }, i * 200);
+      }
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+  </script>
+</div>
